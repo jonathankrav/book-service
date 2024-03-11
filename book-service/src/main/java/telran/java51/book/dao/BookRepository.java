@@ -17,8 +17,4 @@ public interface BookRepository extends JpaRepository<Book, String>{
 	@Query("select b from Book b where b.publisher.publisherName = :publisherName")
 	Set<Book> findBooksByPublisherNameIgnoreCase(@Param("publisherName") String publisherName);
 	
-//	@Query("select a from Author a JOIN .authors a WHERE a.name = :authorName")
-//	Set<Author> findAuthorsByBook(String isbn);
-	
-	
 }
