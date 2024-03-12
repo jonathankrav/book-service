@@ -4,7 +4,6 @@ import java.util.Set;
 
 import telran.java51.book.dto.AuthorDto;
 import telran.java51.book.dto.BookDto;
-import telran.java51.book.dto.PublisherDto;
 
 public interface BookService {
 	boolean addBook(BookDto bookDto);
@@ -23,8 +22,9 @@ public interface BookService {
 	
 	//===== *** ======
 
-	Set<PublisherDto> findPublishersByAuthor(String author);
 
+	String[] findPublishersByAuthor(String author);
+	
 	AuthorDto removeAuthor(String author);
 
 }

@@ -14,7 +14,6 @@ import telran.java51.book.dao.BookRepository;
 import telran.java51.book.dao.PublisherRepository;
 import telran.java51.book.dto.AuthorDto;
 import telran.java51.book.dto.BookDto;
-import telran.java51.book.dto.PublisherDto;
 import telran.java51.book.dto.exceptions.EntityNotFoundException;
 import telran.java51.book.model.Author;
 import telran.java51.book.model.Book;
@@ -97,18 +96,17 @@ public class BookServiceImpl implements BookService {
 				.map(a -> modelMapper.map(a, AuthorDto.class))
 				.collect(Collectors.toSet());
 	}
-
+	
 	@Transactional
 	@Override
-	public Set<PublisherDto> findPublishersByAuthor(String author) {
+	public String[] findPublishersByAuthor(String author) {
 		return	bookRepository.findBooksByAuthor(author).stream()
-		.map(b -> b.getPublisher())
+		.map(b -> b.getPublisher().getPublisherName())
 		.distinct() 
-		.map(p -> modelMapper.map(p, PublisherDto.class))
-		.collect(Collectors.toSet());
-		
+		.toArray(String[]::new);
 	}
 
+	
 	@Override
 	public AuthorDto removeAuthor(String author) {
 		Author authorEntity =  authorRepository.findById(author).orElseThrow(EntityNotFoundException::new);
