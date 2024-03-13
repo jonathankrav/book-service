@@ -57,13 +57,18 @@ public class BookController {
 	}
 	
 	@GetMapping("/publishers/author/{author}")
-	public String[] findPublishersByAuthor(@PathVariable String author){
+	public Set <String> findPublishersByAuthor(@PathVariable String author){
 		return bookService.findPublishersByAuthor(author);
 	}
 	
-	@DeleteMapping("/author/{author}")
-	public AuthorDto removeAuthor(@PathVariable String author) {
-		return bookService.removeAuthor(author);
+//	@GetMapping("/publishers/author/{author}")
+//	public Iterable <String> findPublishersByAuthor(@PathVariable String authorName){
+//		return bookService.findPublishersByAuthor(authorName);
+//	}
+	
+	@DeleteMapping("/author/{authorName}")
+	public AuthorDto removeAuthor(@PathVariable String authorName) {
+		return bookService.removeAuthor(authorName);
 	}
 
 }

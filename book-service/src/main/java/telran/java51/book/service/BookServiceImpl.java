@@ -72,51 +72,58 @@ public class BookServiceImpl implements BookService {
 		return modelMapper.map(book, BookDto.class);
 	}
 
-	@Transactional
+	@Transactional()
 	@Override
 	public Set<BookDto> findBooksByAuthor(String author) {
-		return bookRepository.findBooksByAuthor(author).stream()
-				.map(b -> modelMapper.map(b, BookDto.class))
+		return bookRepository.findBooksByAuthor(author).stream().map(b -> modelMapper.map(b, BookDto.class))
 				.collect(Collectors.toSet());
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	@Override
 	public Set<BookDto> findBooksByPublisher(String publisher) {
 		return bookRepository.findBooksByPublisherNameIgnoreCase(publisher).stream()
-				.map(b -> modelMapper.map(b, BookDto.class))
-				.collect(Collectors.toSet());
+				.map(b -> modelMapper.map(b, BookDto.class)).collect(Collectors.toSet());
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	@Override
 	public Set<AuthorDto> findBookAuthors(String isbn) {
 		Book book = bookRepository.findById(isbn).orElseThrow(EntityNotFoundException::new);
-		return book.getAuthors().stream()
-				.map(a -> modelMapper.map(a, AuthorDto.class))
-				.collect(Collectors.toSet());
-	}
-	
-	@Transactional
-	@Override
-	public String[] findPublishersByAuthor(String author) {
-		return	bookRepository.findBooksByAuthor(author).stream()
-		.map(b -> b.getPublisher().getPublisherName())
-		.distinct() 
-		.toArray(String[]::new);
+		return book.getAuthors().stream().map(a -> modelMapper.map(a, AuthorDto.class)).collect(Collectors.toSet());
 	}
 
-	
+	@Transactional
 	@Override
-	public AuthorDto removeAuthor(String author) {
-		Author authorEntity =  authorRepository.findById(author).orElseThrow(EntityNotFoundException::new);
-		List<Book> list = bookRepository.findBooksByAuthor(author).stream()
-				.collect(Collectors.toList());
+	public Set<String> findPublishersByAuthor(String author) {
+		return bookRepository.findBooksByAuthor(author).stream().map(b -> b.getPublisher().getPublisherName())
+				.distinct().collect(Collectors.toSet());
+	}
+
+//	@Override
+//	public Iterable<String> findPublishersByAuthor(String authorName){
+//	   return publisherRepository.findByPublishersAuthor(authorName);
+
+	@Transactional
+	@Override
+	public AuthorDto removeAuthor(String authorName) {
+		Author author = authorRepository.findById(authorName).orElseThrow(EntityNotFoundException::new);
+		List<Book> list = bookRepository.findBooksByAuthor(authorName).stream().collect(Collectors.toList());
 		for (Book book : list) {
 			bookRepository.delete(book);
 		}
-		authorRepository.delete(authorEntity);
-		return modelMapper.map(authorEntity, AuthorDto.class);
+		authorRepository.deleteById(authorName);
+		return modelMapper.map(author, AuthorDto.class);
 	}
+	
+//	@Transactional
+//	@Override
+//	public AuthorDto removeAuthor(String authorName) {
+//		Author author = authorRepository.findById(authorName).orElseThrow(EntityNotFoundException::new);
+//		bookRepository.deleteByAuthorName(authorName);
+//		authorRepository.deleteById(authorName);
+//		return modelMapper.map(author, AuthorDto.class);
+//	}
+	
 
 }

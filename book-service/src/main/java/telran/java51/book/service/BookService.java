@@ -22,9 +22,9 @@ public interface BookService {
 	
 	//===== *** ======
 
-
-	String[] findPublishersByAuthor(String author);
+//	Iterable<String> findPublishersByAuthor(String authorName);
+	Set <String> findPublishersByAuthor(String author);
 	
-	AuthorDto removeAuthor(String author);
+	AuthorDto removeAuthor(String authorName);
 
 }
