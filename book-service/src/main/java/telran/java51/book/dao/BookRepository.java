@@ -1,13 +1,13 @@
 package telran.java51.book.dao;
 
+import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import telran.java51.book.model.Book;
 
-public interface BookRepository extends JpaRepository<Book, String>{
+public interface BookRepository {
 	
 	@Query("select b from Book b JOIN b.authors a WHERE a.name = :authorName")
 	Set<Book> findBooksByAuthor(@Param("authorName") String authorName);
@@ -19,4 +19,12 @@ public interface BookRepository extends JpaRepository<Book, String>{
 //	Stream<Book> findByAuthorsName(String name);
 //
 //	Stream<Book> findByPublisherPublisherName(String name);
+
+	boolean existsById(String isbn);
+	
+	Optional  <Book>  findById(String isbn);
+
+	Book save(Book book);
+
+	void delete(Book book);	
 }
