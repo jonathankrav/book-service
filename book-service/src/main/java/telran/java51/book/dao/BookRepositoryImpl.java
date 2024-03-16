@@ -2,6 +2,7 @@ package telran.java51.book.dao;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
@@ -17,14 +18,19 @@ public class BookRepositoryImpl implements BookRepository {
 
 	@Override
 	public Set<Book> findBooksByAuthor(String authorName) {
-		// TODO Auto-generated method stub
-		return null;
+		return em.createQuery("SELECT DISTINCT FROM Book b Join b.authors a WHERE a.name =: authorName", Book.class)
+				.setParameter("authorName", authorName)
+				.getResultStream()
+				.collect(Collectors.toSet());
 	}
 
 	@Override
 	public Set<Book> findBooksByPublisherNameIgnoreCase(String publisherName) {
-		// TODO Auto-generated method stub
-		return null;
+		return	em.createQuery("SELECT DISTINCT FROM Book b JOIN publisher p WHERE p.publisherName =: publisherName", Book.class)
+			.setParameter("publisherName", publisherName)
+			.getResultStream()
+			.collect(Collectors.toSet());
+
 	}
 
 	@Override
