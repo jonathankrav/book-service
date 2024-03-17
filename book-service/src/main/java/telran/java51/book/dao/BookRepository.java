@@ -15,7 +15,7 @@ public interface BookRepository {
 	@Query("select b from Book b where b.publisher.publisherName = :publisherName")
 	Set<Book> findBooksByPublisherNameIgnoreCase(@Param("publisherName") String publisherName);
 	
-	void deleteByAuthorsName(String name);	
+//	void deleteByAuthorsName(String name);	
 //	Stream<Book> findByAuthorsName(String name);
 //
 //	Stream<Book> findByPublisherPublisherName(String name);

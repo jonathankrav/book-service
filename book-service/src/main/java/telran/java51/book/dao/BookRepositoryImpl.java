@@ -33,13 +33,13 @@ public class BookRepositoryImpl implements BookRepository {
 
 	}
 
-	@Override
-	public void deleteByAuthorsName(String name) {
-		em.createQuery("DELETE FROM Book b WHERE b.author.name = :name")
-        .setParameter("name", name)
-        .executeUpdate();
-
-	}
+//	@Override
+//	public void deleteByAuthorsName(String name) {
+//		em.createQuery("DELETE FROM Book b WHERE b.author.name = :name")
+//        .setParameter("name", name)
+//        .executeUpdate();
+//
+//	}
 
 	@Override
 	public boolean existsById(String isbn) {
